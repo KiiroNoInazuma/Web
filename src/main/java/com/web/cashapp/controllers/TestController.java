@@ -9,5 +9,6 @@ public class TestController {
     @GetMapping("/ha")
     public String test(@RequestParam int x) {
         return "TEST!!! " + x;
+
     }
 }
