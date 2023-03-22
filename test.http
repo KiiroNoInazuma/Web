@@ -1,3 +1,16 @@
-GET 127.0.0.1:8080
+GET 127.0.0.1:8080/recipes/1
 ###
-GET 127.0.0.1:8080/info
+POST 127.0.0.1:8080/recipes/create
+Content-Type: application/json
+
+{
+    "name": "Сырники из творога",
+    "cookingTime": 30,
+    "ingredients": [
+      { "name": "творог", "weight": 350, "unit": "г" },
+      { "name": "яйцо", "weight": 2, "unit": "шт" },
+      { "name": "мука", "weight": 6, "unit": "ст. л" },
+      { "name": "сахар", "weight": 2, "unit": "ст. л" }
+    ],
+    "manual": ["test", "test"]
+  }
