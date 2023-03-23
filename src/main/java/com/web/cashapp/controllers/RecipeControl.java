@@ -32,6 +32,7 @@ public class RecipeControl {
     @GetMapping("{dd}")
     public Recipes get(@PathVariable("dd") int dd) {
         return myServices.getRecipe(dd);
+
     }
 }
 
