@@ -14,11 +14,16 @@ Content-Type: application/json
 
 ###
 POST 127.0.0.1:8080/recipes/create
-Content-Type: application/stream+json
+Content-Type: application/json
 
 {
   "name": "Сырники из творога",
   "cookingTime": 30,
+  "ingredients": [{
+    "name": "твороггг",
+    "weight": 350,
+    "unit": "г"
+  }],
   "manual": [
     "test",
     "test"
