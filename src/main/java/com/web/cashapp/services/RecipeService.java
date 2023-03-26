@@ -9,7 +9,7 @@ import java.util.Map;
 @Service
 public class RecipeService implements MyServices {
     private int count;
-    private Map<Integer, Recipes> service = new HashMap<>();
+    private final Map<Integer, Recipes> service = new HashMap<>();
 
     @Override
     public void addRecipe(Recipes recipe) {

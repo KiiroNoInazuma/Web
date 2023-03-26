@@ -3,6 +3,6 @@ package com.web.cashapp.services;
 import com.web.cashapp.models.Recipes;
 
 public interface MyServices {
-    public void addRecipe(Recipes recipe);
-    public Recipes getRecipe(int id);
+    void addRecipe(Recipes recipe);
+    Recipes getRecipe(int id);
 }
