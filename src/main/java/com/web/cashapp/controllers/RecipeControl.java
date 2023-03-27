@@ -5,6 +5,7 @@ import com.web.cashapp.models.Recipes;
 import com.web.cashapp.services.IngredientService;
 import com.web.cashapp.services.MyServices;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -30,8 +31,11 @@ public class RecipeControl {
 
 
     @GetMapping("{dd}")
-    public Recipes get(@PathVariable("dd") int dd) {
-        return myServices.getRecipe(dd);
+    public ResponseEntity<Recipes> get(@PathVariable("dd") int dd) {
+        if (myServices.getRecipe(dd) == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(myServices.getRecipe(dd));
+    /*public Recipes get(@PathVariable("dd") int dd) {
+        return myServices.getRecipe(dd);*/
 
     }
 }
