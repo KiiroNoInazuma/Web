@@ -31,12 +31,12 @@ public class RecipeControl {
 
 
     @GetMapping("{dd}")
-    public ResponseEntity<Recipes> get(@PathVariable("dd") int dd) {
+    public ResponseEntity<Recipes> get(@PathVariable int dd) {
         if (myServices.getRecipe(dd) == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(myServices.getRecipe(dd));
-    /*public Recipes get(@PathVariable("dd") int dd) {
-        return myServices.getRecipe(dd);*/
-
+  /*  public Recipes get(@PathVariable int dd) {
+        return myServices.getRecipe(dd);
+    }*/
     }
 }
 
