@@ -3,8 +3,7 @@ package com.web.cashapp.services;
 import com.web.cashapp.models.Recipes;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class RecipeService implements MyServices {
@@ -22,4 +21,29 @@ public class RecipeService implements MyServices {
         return service.get(id);
     }
 
+    @Override
+    public boolean editRecipes(int id, Recipes recipes) {
+        if (getRecipe(id) == null) {
+            return false;
+        } else {
+            service.put(id, recipes);
+            return true;
+        }
+    }
+
+    @Override
+    public Recipes dellRecipes(int id) {
+        if (service.get(id) == null) {
+            return null;
+        } else {
+            return service.remove(id);
+        }
+    }
+@Override
+    public Map<Integer,Recipes> allRecipes() {
+        return service;
+    }
 }
+
+
+

@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/recipes")
@@ -37,6 +40,34 @@ public class RecipeControl {
   /*  public Recipes get(@PathVariable int dd) {
         return myServices.getRecipe(dd);
     }*/
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editRecipes(@PathVariable int id, @RequestBody Recipes recipes) {
+        boolean check = myServices.editRecipes(id, recipes);
+        if (check) {
+            return "Рецепт " + recipes.name() + " изменен";
+        } else {
+            return "Нет рецепта для редактирования";
+        }
+    }
+
+    @PostMapping("del/{id}")
+    public String removeRecipes(@PathVariable int id) {
+        Recipes rec = myServices.dellRecipes(id);
+        if (rec == null) {
+            return "Рецепта не существует";
+        } else {
+            return rec.name() + " удалено";
+        }
+    }
+
+    @GetMapping("all")
+    public ResponseEntity<Collection<Recipes>> all(@RequestParam String all) {
+        if (!all.equals("test")) return ResponseEntity.badRequest().build();
+        else {
+            return ResponseEntity.ok(myServices.allRecipes().values());
+        }
     }
 }
 
