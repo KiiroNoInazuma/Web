@@ -4,6 +4,15 @@ import com.web.cashapp.models.Ingredients;
 import com.web.cashapp.models.Recipes;
 import com.web.cashapp.services.IngredientService;
 import com.web.cashapp.services.MyServices;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +23,9 @@ import java.util.Collection;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/recipes")
+@Tag(name = "Рецепты")
+@OpenAPIDefinition(info =
+@Info(title = "Мой СВАГЕР",description = "тестики"))
 
 public class RecipeControl {
     private MyServices myServices;
@@ -21,6 +33,9 @@ public class RecipeControl {
 
 
     @PostMapping("/create")
+    @Operation(summary = "<СОЗДАНИЕ РЕЦЕПТА>", description = "Создается 1 рецепт")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Рейцепт добавлен",
+            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Recipes.class)))})})
     public String add(@RequestBody Recipes recipes) {
         myServices.addRecipe(recipes);
         return "Рецепт добавлен!";
