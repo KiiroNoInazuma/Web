@@ -42,7 +42,7 @@ public class RecipeControl {
     }*/
     }
 
-    @PostMapping("/edit/{id}")
+    @PutMapping("/edit/{id}")
     public String editRecipes(@PathVariable int id, @RequestBody Recipes recipes) {
         boolean check = myServices.editRecipes(id, recipes);
         if (check) {
