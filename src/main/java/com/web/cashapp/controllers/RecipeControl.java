@@ -64,8 +64,9 @@ public class RecipeControl {
 
     @GetMapping("all")
     public ResponseEntity<Collection<Recipes>> all(@RequestParam String all) {
-        if (!all.equals("test")) return ResponseEntity.badRequest().build();
-        else {
+        if (!all.equals("test")) {
+            return ResponseEntity.badRequest().build();
+        } else {
             return ResponseEntity.ok(myServices.allRecipes().values());
         }
     }
