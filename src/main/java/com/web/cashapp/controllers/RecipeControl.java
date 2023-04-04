@@ -25,7 +25,7 @@ import java.util.Collection;
 @RequestMapping("/recipes")
 @Tag(name = "Рецепты")
 @OpenAPIDefinition(info =
-@Info(title = "Мой СВАГЕР",description = "тестики"))
+@Info(title = "My SWAG",description = "тестики"))
 
 public class RecipeControl {
     private MyServices myServices;
