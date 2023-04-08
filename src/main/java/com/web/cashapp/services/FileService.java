@@ -8,13 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Service
-public class FileService implements File {
-    @Value("name")
+public class FileService implements MyFile {
+    @Value("${name}")
     private String path;
 
     @Override
     public boolean save(String json) {
         try {
+            clear();
             Files.writeString(Path.of(path), json);
             return true;
         } catch (IOException e) {
@@ -25,20 +26,15 @@ public class FileService implements File {
     @Override
     public String read() {
         try {
-            clear();
             return Files.readString(Path.of(path));
         } catch (IOException e) {
             throw new RuntimeException();
         }
     }
 
-    private boolean clear() {
-        try {
-            Files.deleteIfExists(Path.of(path));
-            Files.createFile(Path.of(path));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    private void clear() throws IOException {
+        Files.deleteIfExists(Path.of(path));
+        Files.createFile(Path.of(path));
+
     }
 }

@@ -1,6 +1,6 @@
 package com.web.cashapp.services;
 
-public interface File {
+public interface MyFile {
     boolean save(String json);
 
     String read();

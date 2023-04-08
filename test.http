@@ -1,4 +1,4 @@
-GET 127.0.0.1:8080/recipes/1
+GET 127.0.0.1:8080/recipes/all?all=test
 ###
 POST 127.0.0.1:8080/recipes/create/ingredient
 Content-Type: application/json

@@ -1,19 +1,34 @@
 package com.web.cashapp.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.cashapp.models.Recipes;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
 public class RecipeService implements MyServices {
     private int count;
-    private final Map<Integer, Recipes> service = new HashMap<>();
+    private Map<Integer, Recipes> service = new HashMap<>();
+    private final MyFile file;
+
+    public RecipeService(MyFile file) {
+        this.file = file;
+    }
+
+    @PostConstruct
+    private void init() {
+        readToFile();
+    }
 
     @Override
     public void addRecipe(Recipes recipe) {
         count++;
         service.put(count, recipe);
+        saveToFile();
     }
 
     @Override
@@ -27,6 +42,7 @@ public class RecipeService implements MyServices {
             return false;
         } else {
             service.put(id, recipes);
+            saveToFile();
             return true;
         }
     }
@@ -39,9 +55,30 @@ public class RecipeService implements MyServices {
             return service.remove(id);
         }
     }
-@Override
-    public Map<Integer,Recipes> allRecipes() {
+
+    @Override
+    public Map<Integer, Recipes> allRecipes() {
         return service;
+    }
+
+    private void saveToFile() {
+        try {
+            String json = new ObjectMapper().writeValueAsString(service);
+            file.save(json);
+        } catch (JsonProcessingException j) {
+            throw new RuntimeException(j);
+        }
+    }
+
+    private void readToFile() {
+        String json = file.read();
+        try {
+            service = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Recipes>>() {
+            });
+        } catch (JsonProcessingException j) {
+            throw new RuntimeException(j);
+
+        }
     }
 
 }
