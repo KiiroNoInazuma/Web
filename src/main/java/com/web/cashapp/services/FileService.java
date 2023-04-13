@@ -3,6 +3,7 @@ package com.web.cashapp.services;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +36,10 @@ public class FileService implements MyFile {
     private void clear() throws IOException {
         Files.deleteIfExists(Path.of(path));
         Files.createFile(Path.of(path));
-
     }
+
+    public File getDataFile() {
+        return new File(path);
+    }
+
 }

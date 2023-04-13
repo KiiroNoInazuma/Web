@@ -2,6 +2,7 @@ package com.web.cashapp.controllers;
 
 import com.web.cashapp.models.Ingredients;
 import com.web.cashapp.models.Recipes;
+import com.web.cashapp.services.FileService;
 import com.web.cashapp.services.IngredientService;
 import com.web.cashapp.services.MyServices;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -14,9 +15,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 
 
@@ -30,6 +37,7 @@ import java.util.Collection;
 public class RecipeControl {
     private MyServices myServices;
     private IngredientService ingServ;
+    private FileService fileService;
 
 
     @PostMapping("/create")
@@ -85,5 +93,22 @@ public class RecipeControl {
             return ResponseEntity.ok(myServices.allRecipes().values());
         }
     }
+
+    @GetMapping("file/export")
+    public ResponseEntity<InputStreamResource> download() throws FileNotFoundException {
+        File file = fileService.getDataFile();
+        if(file.exists()){
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            return  ResponseEntity
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .contentLength(file.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tsttst.json")
+                    .body(resource);
+        }else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
 }
 
