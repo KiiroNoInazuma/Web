@@ -15,15 +15,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Collection;
 
 
@@ -32,7 +33,7 @@ import java.util.Collection;
 @RequestMapping("/recipes")
 @Tag(name = "Рецепты")
 @OpenAPIDefinition(info =
-@Info(title = "My SWAG",description = "тестики"))
+@Info(title = "My SWAG", description = "тестики"))
 
 public class RecipeControl {
     private MyServices myServices;
@@ -97,18 +98,40 @@ public class RecipeControl {
     @GetMapping("file/export")
     public ResponseEntity<InputStreamResource> download() throws FileNotFoundException {
         File file = fileService.getDataFile();
-        if(file.exists()){
+        if (file.exists()) {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-            return  ResponseEntity
+            return ResponseEntity
                     .ok()
                     .contentType(MediaType.APPLICATION_JSON)
                     .contentLength(file.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tsttst.json")
                     .body(resource);
-        }else {
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
 
+    @PostMapping(value = "file/import",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> upload(@RequestParam MultipartFile file) throws IOException {
+        fileService.clear();
+        File datafile = fileService.getDataFile();
+        try {
+            FileOutputStream fos = new FileOutputStream(datafile);
+            IOUtils.copy(file.getInputStream(), fos);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        /*try (BufferedInputStream bis = new BufferedInputStream(file.getInputStream());
+             FileOutputStream fos = new FileOutputStream(datafile);
+             BufferedOutputStream bos = new BufferedOutputStream(fos)
+        ) {
+            byte[] buffer = new byte[1024];
+            while (bis.read() > 0) bos.write(buffer);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }*/
+    }
 }
 

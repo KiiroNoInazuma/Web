@@ -32,8 +32,8 @@ public class FileService implements MyFile {
             throw new RuntimeException();
         }
     }
-
-    private void clear() throws IOException {
+@Override
+    public void clear() throws IOException {
         Files.deleteIfExists(Path.of(path));
         Files.createFile(Path.of(path));
     }
