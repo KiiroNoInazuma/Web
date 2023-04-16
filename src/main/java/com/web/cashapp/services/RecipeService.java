@@ -5,8 +5,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.cashapp.models.Recipes;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -86,10 +88,10 @@ public class RecipeService implements MyServices {
     public Path createReport(int id) throws IOException {
         Recipes recipes = service.get(id);
         Path path = file.createTemp("report");
-        FileWriter fileWriter = new FileWriter(path.toFile());
-        fileWriter.write(recipes.name());
-        fileWriter.close();
+        Writer writer = Files.newBufferedWriter(path);
+        writer.write(recipes.name());
         path.toFile().deleteOnExit();
+        writer.close();
         return path;
     }
 
