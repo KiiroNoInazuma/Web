@@ -5,8 +5,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.cashapp.models.Recipes;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
+import java.io.*;
+import java.nio.file.Path;
 import java.util.*;
 
 @Service
@@ -79,6 +80,17 @@ public class RecipeService implements MyServices {
             throw new RuntimeException(j);
 
         }
+    }
+
+    @Override
+    public Path createReport(int id) throws IOException {
+        Recipes recipes = service.get(id);
+        Path path = file.createTemp("report");
+        FileWriter fileWriter = new FileWriter(path.toFile());
+        fileWriter.write(recipes.name());
+        fileWriter.close();
+        path.toFile().deleteOnExit();
+        return path;
     }
 
 }

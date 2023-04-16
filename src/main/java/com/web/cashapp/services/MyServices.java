@@ -2,6 +2,8 @@ package com.web.cashapp.services;
 
 import com.web.cashapp.models.Recipes;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Map;
 
 public interface MyServices {
@@ -14,4 +16,6 @@ public interface MyServices {
     Recipes dellRecipes(int id);
 
     Map<Integer, Recipes> allRecipes();
+
+    Path createReport(int id) throws IOException;
 }

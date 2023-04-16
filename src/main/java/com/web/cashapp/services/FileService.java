@@ -1,5 +1,6 @@
 package com.web.cashapp.services;
 
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import java.nio.file.Path;
 public class FileService implements MyFile {
     @Value("${name}")
     private String path;
+    //@Value("${path}")
+    //private String pathTest;
 
     @Override
     public boolean save(String json) {
@@ -32,7 +35,8 @@ public class FileService implements MyFile {
             throw new RuntimeException();
         }
     }
-@Override
+
+    @Override
     public void clear() throws IOException {
         Files.deleteIfExists(Path.of(path));
         Files.createFile(Path.of(path));
@@ -42,4 +46,13 @@ public class FileService implements MyFile {
         return new File(path);
     }
 
+
+    @Override
+    public Path createTemp(String suffix) {
+        try {
+            return Files.createTempFile(Path.of("src/main/resources"), "tempFile", suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

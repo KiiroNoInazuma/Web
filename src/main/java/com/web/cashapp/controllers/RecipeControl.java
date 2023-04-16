@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 
 
@@ -111,7 +113,25 @@ public class RecipeControl {
         }
     }
 
-    @PostMapping(value = "file/import",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    @GetMapping("file/export/{id}")
+    public ResponseEntity<InputStreamResource> downloadTemp(@PathVariable int id) throws IOException {
+        Path path = myServices.createReport(id);
+        if (Files.size(path) != 0) {
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .contentLength(Files.size(path))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=trent.txt")
+                    .body(resource);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+
+    @PostMapping(value = "file/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> upload(@RequestParam MultipartFile file) throws IOException {
         fileService.clear();
         File datafile = fileService.getDataFile();
