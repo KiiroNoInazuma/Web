@@ -22,7 +22,7 @@ public class RecipeService implements MyServices {
         this.file = file;
     }
 
-    @PostConstruct
+   @PostConstruct
     private void init() {
         readToFile();
     }
